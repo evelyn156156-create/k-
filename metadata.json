@@ -1,0 +1,5 @@
+{
+  "name": "Crypto Liquidation Demo",
+  "description": "A crypto trading interface featuring a liquidation 'burst' animation and success popup.",
+  "requestFramePermissions": []
+}
