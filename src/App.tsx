@@ -257,12 +257,12 @@ export default function App() {
     setLiquidationState('shaking');
     setTimeout(() => {
       setLiquidationState('cracked');
-      // 碎裂状态停留 0.5s 后，碎片开始飞散，同时弹出成功弹窗
+      // 碎裂状态停留 1s 后，碎片开始飞散，同时弹出成功弹窗
       setTimeout(() => {
         setLiquidationState('shattering');
         setShowSuccess(true);
-      }, 500);
-    }, 400);
+      }, 1000);
+    }, 1500);
   };
 
   const onShatterComplete = () => {
@@ -394,9 +394,9 @@ export default function App() {
               exit={{ opacity: 0 }}
               animate={
                 liquidationState === 'shaking' 
-                  ? { x: [-5, 5, -5, 5, -3, 3, 0], y: [-2, 2, -2, 2, -1, 1, 0], scale: 1.02 } 
+                  ? { x: 0, y: 0, scale: 1.01 } 
                   : liquidationState === 'cracked'
-                  ? { x: 0, y: 0, scale: 1.02 }
+                  ? { x: 0, y: 0, scale: 1.01 }
                   : { x: 0, y: 0, scale: 1 }
               }
               transition={{ duration: 0.4 }}
@@ -409,9 +409,9 @@ export default function App() {
                     : liquidationState === 'shaking' || liquidationState === 'cracked'
                     ? { 
                         opacity: 1,
-                        borderColor: ['rgba(255,255,255,0.1)', 'rgba(255,50,50,1)', 'rgba(255,255,255,0.1)'],
+                        borderColor: ['rgba(255,255,255,0.1)', 'rgba(255,80,80,0.6)', 'rgba(255,255,255,0.1)'],
                         backgroundColor: '#1A1235',
-                        boxShadow: ['0 25px 50px -12px rgba(0,0,0,0.25)', '0 0 50px 15px rgba(255,50,50,0.8)', '0 25px 50px -12px rgba(0,0,0,0.25)']
+                        boxShadow: ['0 25px 50px -12px rgba(0,0,0,0.25)', '0 0 20px 5px rgba(255,80,80,0.4)', '0 25px 50px -12px rgba(0,0,0,0.25)']
                       }
                     : { 
                         opacity: 1,
@@ -422,14 +422,14 @@ export default function App() {
                 }
                 transition={
                   liquidationState === 'shaking' || liquidationState === 'cracked'
-                    ? { duration: 0.12, repeat: Infinity, ease: "linear" }
+                    ? { duration: 0.5, repeat: Infinity, ease: "easeInOut" }
                     : { duration: 0 }
                 }
                 className="rounded-[32px] p-7 border relative overflow-hidden"
               >
                 
-                {/* Cracks Overlay during shaking & cracked */}
-                {(liquidationState === 'shaking' || liquidationState === 'cracked') && (
+                {/* Cracks Overlay during cracked */}
+                {liquidationState === 'cracked' && (
                   <svg className="absolute inset-0 w-full h-full z-40 pointer-events-none" style={{ filter: 'drop-shadow(0 0 2px rgba(255,255,255,0.5))' }}>
                     <motion.path
                       d="M 20 0 L 50 50 L 30 100 L 80 150 L 60 200 L 100 250"
@@ -463,10 +463,9 @@ export default function App() {
                     />
                     
                     {/* Extra cracks that appear instantly during 'cracked' state to simulate "分开裂一些" */}
-                    {liquidationState === 'cracked' && (
-                      <>
-                        <motion.path
-                          d="M 50 50 L 100 30 L 150 40"
+                    <>
+                      <motion.path
+                        d="M 50 50 L 100 30 L 150 40"
                           fill="transparent"
                           stroke="rgba(255,255,255,0.4)"
                           strokeWidth="2"
@@ -495,8 +494,7 @@ export default function App() {
                           animate={{ pathLength: 1 }}
                           transition={{ duration: 0.1 }}
                         />
-                      </>
-                    )}
+                    </>
                   </svg>
                 )}
 
